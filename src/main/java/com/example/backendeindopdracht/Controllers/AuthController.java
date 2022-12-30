@@ -1,47 +1,62 @@
-//package com.example.backendeindopdracht.Controllers;
-//
-//import com.example.backendeindopdracht.dtos.AuthDto;
-//import com.example.backendeindopdracht.security.JwtService;
-//import org.springframework.http.HttpHeaders;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-//import org.springframework.security.core.Authentication;
-//import org.springframework.security.core.AuthenticationException;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//@RestController
-//public class AuthController {
-//
-//    private final AuthenticationManager authManager;
-//    private final JwtService jwtService;
-//
-//    public AuthController(AuthenticationManager man, JwtService service) {
-//        this.authManager = man;
-//        this.jwtService = service;
-//    }
-//
-//    @PostMapping("/auth")
-//    public ResponseEntity<Object> signIn(@RequestBody AuthDto authDto) {
-//        UsernamePasswordAuthenticationToken up =
-//                new UsernamePasswordAuthenticationToken(authDto.username, authDto.password);
-//
-//        try {
-//            Authentication auth = authManager.authenticate(up);
-//
-//            UserDetails ud = (UserDetails) auth.getPrincipal();
-//            String token = jwtService.generateToken(ud);
-//
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-//                    .body("Token generated");
-//        }
-//        catch (AuthenticationException ex) {
-//            return new ResponseEntity(ex.getMessage(), HttpStatus.UNAUTHORIZED);
-//        }
-//    }
-//}
+package com.example.backendeindopdracht.Controllers;
+
+import com.example.backendeindopdracht.payload.AuthenticationRequest;
+import com.example.backendeindopdracht.payload.AuthenticationResponse;
+import com.example.backendeindopdracht.service.CustomUserDetailsService;
+import com.example.backendeindopdracht.utils.JwtUtil;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
+
+@CrossOrigin
+@RestController
+public class AuthController {
+
+    private final AuthenticationManager authenticationManager;
+
+    private final CustomUserDetailsService userDetailsService;
+
+    final
+    JwtUtil jwtUtl;
+
+    public AuthController(AuthenticationManager authenticationManager, CustomUserDetailsService userDetailsService, JwtUtil jwtUtl) {
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+        this.jwtUtl = jwtUtl;
+    }
+
+    @GetMapping(value = "/authenticated")
+    public ResponseEntity<Object> authenticated(Authentication authentication, Principal principal) {
+        return ResponseEntity.ok().body(principal);
+    }
+
+    @PostMapping(value = "/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+
+        String username = authenticationRequest.getUsername();
+        String password = authenticationRequest.getPassword();
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password)
+            );
+        }
+        catch (BadCredentialsException ex) {
+            throw new Exception("Incorrect username or password", ex);
+        }
+
+        final UserDetails userDetails = userDetailsService
+                .loadUserByUsername(username);
+
+        final String jwt = jwtUtl.generateToken(userDetails);
+
+        return ResponseEntity.ok(new AuthenticationResponse(jwt));
+    }
+
+}
