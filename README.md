@@ -1,5 +1,5 @@
 # FSD-Eindopdracht
-## Integrale eindopdrachtBootcamp FSD (60 EC)
+## EindopdrachtBootcamp FSD
 
  
 
