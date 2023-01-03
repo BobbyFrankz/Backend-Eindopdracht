@@ -7,6 +7,9 @@ import com.example.backendeindopdracht.Models.User;
 import com.example.backendeindopdracht.Repositories.UserRepository;
 import com.example.backendeindopdracht.exceptions.UsernameNotFoundException;
 import com.example.backendeindopdracht.utils.RandomStringGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,6 +20,10 @@ import java.util.Set;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -49,9 +56,10 @@ public class UserService {
 
     public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
+//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userDto.setApikey(randomString);
         User newUser = userRepository.save(toUser(userDto));
-        return newUser.getUsername();
+        return newUser.getUsername() ;
     }
 
     public void deleteUser(String username) {
@@ -61,7 +69,7 @@ public class UserService {
     public void updateUser(String username, UserDto newUser) {
         if (!userRepository.existsById(username)) throw new RecordNotFoundException();
         User user = userRepository.findById(username).get();
-        user.setPassword(newUser.getPassword());
+        user.setPassword(passwordEncoder.encode(newUser.getPassword()));
         userRepository.save(user);
     }
 

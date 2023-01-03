@@ -65,6 +65,14 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
 
+
+                .antMatchers(HttpMethod.POST, "/upload").permitAll()
+                .antMatchers(HttpMethod.GET,"/audifiles").permitAll()
+                .antMatchers(HttpMethod.POST,"/audiofiles/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/audiofiles/**").permitAll()
+
+
+
                 // Je mag meerdere paths tegelijk definieren
                 .antMatchers("/authenticated").authenticated()
                 .antMatchers("/authenticate").permitAll()

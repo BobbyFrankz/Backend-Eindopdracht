@@ -93,6 +93,7 @@ public class AccountService {
     public AccountDto transferToDto (Account account) {
         AccountDto acdto = new AccountDto();
 
+        acdto.setId(account.getId());
         acdto.setUsername(account.getUsername());
         acdto.setPassword(account.getPassword());
         acdto.setFirstname(account.getFirstname());
