@@ -80,7 +80,7 @@ public class AccountService {
             updateAccount.setEnabled(accountDto.isEnabled());
 
 
-            // sla de television op
+            // sla het account op
             acRepos.save(updateAccount);
             //return
             return transferToDto(updateAccount);

@@ -4,8 +4,6 @@ import com.example.backendeindopdracht.dtos.AccountDto;
 import com.example.backendeindopdracht.service.AccountService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 public class AccountController {
     private final AccountService accountService;

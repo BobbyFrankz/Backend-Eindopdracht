@@ -61,15 +61,17 @@ public class SecurityConfig {
                 // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
 //                .antMatchers("/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/users").permitAll()
-                .antMatchers(HttpMethod.GET,"/users").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST,"/users/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.GET,"/users").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.POST,"/users/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+//
+//
+//                .antMatchers(HttpMethod.POST, "/upload").hasAnyRole("USER","ADMIN")
+//                .antMatchers(HttpMethod.GET,"/files").hasAnyRole("USER","ADMIN")
+//                .antMatchers(HttpMethod.POST,"/files/**").hasAnyRole("USER","ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/audiofiles/**").hasRole("ADMIN")
 
 
-                .antMatchers(HttpMethod.POST, "/upload").permitAll()
-                .antMatchers(HttpMethod.GET,"/audifiles").permitAll()
-                .antMatchers(HttpMethod.POST,"/audiofiles/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/audiofiles/**").permitAll()
 
 
 

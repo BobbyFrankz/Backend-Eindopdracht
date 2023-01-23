@@ -2,28 +2,43 @@ package com.example.backendeindopdracht.service;
 
 
 import java.io.IOException;
+
 import java.util.stream.Stream;
 
+import com.example.backendeindopdracht.Models.AudioInfo;
 import com.example.backendeindopdracht.Models.FileDB;
+import com.example.backendeindopdracht.Repositories.AudioInfoRepository;
 import com.example.backendeindopdracht.Repositories.FileDBRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.backendeindopdracht.dtos.AudioInfoDto;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 
 
+
 @Service
 public class FileStorageService {
 
-    @Autowired
-    private FileDBRepository fileDBRepository;
+    private final FileDBRepository fileDBRepository;
+    private final AudioInfoRepository audioInfoRepository;
 
-    public FileDB store(MultipartFile file) throws IOException {
+
+    public FileStorageService(FileDBRepository fileDBRepository, AudioInfoRepository audioInfoRepository) {
+        this.fileDBRepository = fileDBRepository;
+        this.audioInfoRepository = audioInfoRepository;
+    }
+
+    public FileDB store(MultipartFile file,String genre, int bpm) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
-        FileDB FileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
+        FileDB fileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
+        fileDBRepository.save(fileDB);
+        AudioInfo audioInfo = new AudioInfo(genre,bpm,fileDB);
+        audioInfoRepository.save(audioInfo);
+        fileDB.setAudioInfo(audioInfo);
 
-        return fileDBRepository.save(FileDB);
+
+        return fileDBRepository.save(fileDB);
     }
 
     public FileDB getFile(String id) {
@@ -33,4 +48,11 @@ public class FileStorageService {
     public Stream<FileDB> getAllFiles() {
         return fileDBRepository.findAll().stream();
     }
+
+
+    public static AudioInfoDto toDto(AudioInfo audioInfo) {
+        return new AudioInfoDto(audioInfo.getGenre(),audioInfo.getBpm());
+
+    }
+
 }

@@ -2,45 +2,33 @@ package com.example.backendeindopdracht.Models;
 
 import javax.persistence.*;
 
-
 import org.hibernate.annotations.GenericGenerator;
 
-
 @Entity
-@Table(name = "files")
-public class FileDB {
-
+@Table(name = "imagefiles")
+public class Image {
+    @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")
-
-    @Id
     private String id;
-
     private String name;
-
-
-    private String type;
 
     @Lob
     private byte[] data;
 
     @OneToOne
-    private AudioInfo audioInfo;
+    @JoinColumn(name = "file_id")
+    private FileDB fileDB;
 
-    public FileDB() {
+    public Image() {
     }
 
 
-    public FileDB(String name, String type, byte[] data) {
+    public Image(String name, byte[] data) {
+
         this.name = name;
-        this.type = type;
         this.data = data;
 
-
-    }
-
-    public void setAudioInfo(AudioInfo audioInfo) {
-        this.audioInfo = audioInfo;
     }
 
     public String getId() {
@@ -55,14 +43,6 @@ public class FileDB {
         this.name = name;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
     public byte[] getData() {
         return data;
     }
@@ -71,7 +51,15 @@ public class FileDB {
         this.data = data;
     }
 
-    public AudioInfo getAudioInfo() {
-        return audioInfo;
+    public Image(FileDB fileDB) {
+        this.fileDB = fileDB;
+    }
+
+    public FileDB getFileDB() {
+        return fileDB;
+    }
+
+    public void setFileDB(FileDB fileDB) {
+        this.fileDB = fileDB;
     }
 }

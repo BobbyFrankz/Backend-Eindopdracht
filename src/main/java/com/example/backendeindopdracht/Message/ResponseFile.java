@@ -1,16 +1,23 @@
 package com.example.backendeindopdracht.Message;
 
+import com.example.backendeindopdracht.Models.AudioInfo;
+import com.example.backendeindopdracht.dtos.AudioInfoDto;
+
 public class ResponseFile {
     private String name;
     private String url;
     private String type;
     private long size;
 
-    public ResponseFile(String name, String url, String type, long size) {
+    private AudioInfoDto audioInfoDto;
+
+
+    public ResponseFile(String name, String url, String type, long size, AudioInfoDto audioInfoDto) {
         this.name = name;
         this.url = url;
         this.type = type;
         this.size = size;
+        this.audioInfoDto = audioInfoDto;
     }
 
     public String getName() {
@@ -43,5 +50,13 @@ public class ResponseFile {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public AudioInfoDto getAudioInfo() {
+        return audioInfoDto;
+    }
+
+    public void setAudioInfo(AudioInfoDto audioInfoDto) {
+        this.audioInfoDto = audioInfoDto;
     }
 }

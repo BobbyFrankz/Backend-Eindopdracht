@@ -56,7 +56,7 @@ public class UserService {
 
     public String createUser(UserDto userDto) {
         String randomString = RandomStringGenerator.generateAlphaNumeric(20);
-//        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userDto.setApikey(randomString);
         User newUser = userRepository.save(toUser(userDto));
         return newUser.getUsername() ;
@@ -105,6 +105,7 @@ public class UserService {
         dto.enabled = user.isEnabled();
         dto.apikey = user.getApikey();
         dto.email = user.getEmail();
+        dto.artistOrProducer = user.isArtistOrProducer();
         dto.authorities = user.getAuthorities();
 
         return dto;
@@ -119,6 +120,8 @@ public class UserService {
         user.setEnabled(userDto.getEnabled());
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
+        user.setArtistOrProducer(userDto.getArtistOrProducer());
+
 
         return user;
     }

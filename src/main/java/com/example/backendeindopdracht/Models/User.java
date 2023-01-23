@@ -24,6 +24,9 @@ public class User {
     @Column
     private String email;
 
+    @Column
+    private boolean artistOrProducer;
+
     @OneToMany(
             targetEntity = Authority.class,
             mappedBy = "username",
@@ -48,7 +51,8 @@ public class User {
     public void setApikey(String apikey) { this.apikey = apikey; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email;}
-
+    public boolean isArtistOrProducer() {return artistOrProducer; }
+    public void setArtistOrProducer(boolean artistOrProducer) {this.artistOrProducer = artistOrProducer; }
     public Set<Authority> getAuthorities() { return authorities; }
     public void addAuthority(Authority authority) {
         this.authorities.add(authority);
@@ -56,5 +60,6 @@ public class User {
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
     }
+
 
 }

@@ -12,6 +12,7 @@ public class UserDto {
     public Boolean enabled;
     public String apikey;
     public String email;
+    public boolean artistOrProducer;
     public Set<Authority> authorities;
 
     public String getUsername() {
@@ -33,6 +34,8 @@ public class UserDto {
     public String getEmail() {
         return email;
     }
+
+    public boolean getArtistOrProducer() {return artistOrProducer;}
 
     public Set<Authority> getAuthorities() {
         return authorities;
@@ -58,7 +61,13 @@ public class UserDto {
         this.email = email;
     }
 
+    public void setArtistOrProducer(boolean artistOrProducer) {
+        this.artistOrProducer = artistOrProducer;
+    }
+
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
     }
+
+
 }
