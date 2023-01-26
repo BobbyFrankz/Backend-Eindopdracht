@@ -33,10 +33,10 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String genre, @RequestParam int bpm) {
+    public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam String genre, @RequestParam int bpm, @RequestParam String artist) {
         String message;
         try {
-            storageService.store(file,genre,bpm);
+            storageService.store(file, genre, bpm, artist);
 
             message = "Uploaded the file successfully: " + file.getOriginalFilename();
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));

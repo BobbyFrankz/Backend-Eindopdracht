@@ -29,11 +29,11 @@ public class FileStorageService {
         this.audioInfoRepository = audioInfoRepository;
     }
 
-    public FileDB store(MultipartFile file,String genre, int bpm) throws IOException {
+    public FileDB store(MultipartFile file, String genre, int bpm, String artist) throws IOException {
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
         FileDB fileDB = new FileDB(fileName, file.getContentType(), file.getBytes());
         fileDBRepository.save(fileDB);
-        AudioInfo audioInfo = new AudioInfo(genre,bpm,fileDB);
+        AudioInfo audioInfo = new AudioInfo(genre,bpm,artist,fileDB);
         audioInfoRepository.save(audioInfo);
         fileDB.setAudioInfo(audioInfo);
 
@@ -51,7 +51,7 @@ public class FileStorageService {
 
 
     public static AudioInfoDto toDto(AudioInfo audioInfo) {
-        return new AudioInfoDto(audioInfo.getGenre(),audioInfo.getBpm());
+        return new AudioInfoDto(audioInfo.getGenre(),audioInfo.getBpm(), audioInfo.getArtist());
 
     }
 

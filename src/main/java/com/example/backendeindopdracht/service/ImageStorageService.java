@@ -4,10 +4,12 @@ package com.example.backendeindopdracht.service;
 import java.io.IOException;
 import java.util.stream.Stream;
 
-import com.example.backendeindopdracht.Models.FileDB;
+
 import com.example.backendeindopdracht.Models.Image;
 
+
 import com.example.backendeindopdracht.Repositories.ImageRepository;
+import com.example.backendeindopdracht.Repositories.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,14 +21,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageStorageService {
 
     private final ImageRepository imageRepository;
+    private final UserRepository userRepository;
 
-    public Image createImageWithFileDB(Image image, FileDB fileDB) {
-        image.setFileDB(fileDB);
-        return imageRepository.save(image);
-    }
 
-    public ImageStorageService(ImageRepository imageRepository) {
+
+    public ImageStorageService(ImageRepository imageRepository, UserRepository userRepository) {
         this.imageRepository = imageRepository;
+        this.userRepository = userRepository;
     }
 
     public Image store(MultipartFile file) throws IOException {

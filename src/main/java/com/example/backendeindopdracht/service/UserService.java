@@ -1,5 +1,7 @@
 package com.example.backendeindopdracht.service;
 
+import com.example.backendeindopdracht.Models.Image;
+import com.example.backendeindopdracht.Repositories.ImageRepository;
 import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.exceptions.RecordNotFoundException;
 import com.example.backendeindopdracht.Models.Authority;
@@ -19,14 +21,16 @@ import java.util.Set;
 
 @Service
 public class UserService {
-    private final UserRepository userRepository;
+    private static  UserRepository userRepository;
+    private static  ImageRepository imageRepository;
 
     @Autowired
     @Lazy
     private PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, ImageRepository imageRepository) {
         this.userRepository = userRepository;
+        this.imageRepository = imageRepository;
     }
 
 
@@ -59,6 +63,7 @@ public class UserService {
         userDto.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userDto.setApikey(randomString);
         User newUser = userRepository.save(toUser(userDto));
+
         return newUser.getUsername() ;
     }
 
@@ -95,6 +100,20 @@ public class UserService {
         user.removeAuthority(authorityToRemove);
         userRepository.save(user);
     }
+    public static void assignImageToUser(String id, String userName) {
+        Optional<Image> optionalImage = imageRepository.findById(id);
+        Optional<User> optionalUser = userRepository.findById(userName);
+        if (optionalImage.isPresent() && optionalUser.isPresent()) {
+            Image image = optionalImage.get();
+            User user = optionalUser.get();
+            user.setImage(image);
+            userRepository.save(user);
+
+        } else {
+            throw new RecordNotFoundException();
+        }
+
+    }
 
     public static UserDto fromUser(User user){
 
@@ -107,6 +126,7 @@ public class UserService {
         dto.email = user.getEmail();
         dto.artistOrProducer = user.isArtistOrProducer();
         dto.authorities = user.getAuthorities();
+        dto.image = user.getImage();
 
         return dto;
     }
@@ -121,6 +141,7 @@ public class UserService {
         user.setApikey(userDto.getApikey());
         user.setEmail(userDto.getEmail());
         user.setArtistOrProducer(userDto.getArtistOrProducer());
+        user.setImage(userDto.getImage());
 
 
         return user;

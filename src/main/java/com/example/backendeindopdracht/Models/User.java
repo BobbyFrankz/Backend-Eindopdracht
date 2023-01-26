@@ -2,6 +2,7 @@ package com.example.backendeindopdracht.Models;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,6 +36,9 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    @OneToOne
+    private Image image;
+
     public String getUsername() { return username; }
     public void setUsername(String username) {
         this.username = username;
@@ -44,6 +48,9 @@ public class User {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+    public void setImage(Image image) {
+        this.image = image;
     }
     public boolean isEnabled() { return enabled;}
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
@@ -59,7 +66,10 @@ public class User {
     }
     public void removeAuthority(Authority authority) {
         this.authorities.remove(authority);
+
     }
+    public Image getImage() { return image; }
 
-
+    public void setAuthorities(List<String> asList) {
+    }
 }

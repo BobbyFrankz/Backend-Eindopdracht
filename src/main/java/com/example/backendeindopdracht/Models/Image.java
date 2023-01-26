@@ -5,7 +5,7 @@ import javax.persistence.*;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "imagefiles")
+@Table(name = "image")
 public class Image {
     @Id
     @GeneratedValue(generator = "uuid")
@@ -17,8 +17,8 @@ public class Image {
     private byte[] data;
 
     @OneToOne
-    @JoinColumn(name = "file_id")
-    private FileDB fileDB;
+    @JoinColumn(name = "image")
+    private User user;
 
     public Image() {
     }
@@ -51,15 +51,14 @@ public class Image {
         this.data = data;
     }
 
-    public Image(FileDB fileDB) {
-        this.fileDB = fileDB;
+    public User getUser() {
+        return user;
     }
 
-    public FileDB getFileDB() {
-        return fileDB;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public void setFileDB(FileDB fileDB) {
-        this.fileDB = fileDB;
+    public void setUrl(String imageUrl2) {
     }
 }

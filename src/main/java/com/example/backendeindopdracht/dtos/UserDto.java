@@ -2,7 +2,9 @@ package com.example.backendeindopdracht.dtos;
 
 
 import com.example.backendeindopdracht.Models.Authority;
+import com.example.backendeindopdracht.Models.Image;
 
+import java.util.Objects;
 import java.util.Set;
 
 public class UserDto {
@@ -14,6 +16,8 @@ public class UserDto {
     public String email;
     public boolean artistOrProducer;
     public Set<Authority> authorities;
+    public Image image;
+
 
     public String getUsername() {
         return username;
@@ -69,5 +73,36 @@ public class UserDto {
         this.authorities = authorities;
     }
 
+    public Image getImage() {
+        return image;
+    }
 
+    public void setImage(Image image) {
+        this.image = image;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof UserDto)) {
+            return false;
+        }
+        UserDto other = (UserDto) obj;
+        return Objects.equals(username, other.username)
+                && Objects.equals(password, other.password)
+                && Objects.equals(enabled, other.enabled)
+                && Objects.equals(apikey, other.apikey)
+                && Objects.equals(email, other.email)
+                && Objects.equals(artistOrProducer, other.artistOrProducer)
+                && Objects.equals(authorities, other.authorities)
+                && Objects.equals(image, other.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, enabled, apikey, email, artistOrProducer, authorities, image);
+    }
 }

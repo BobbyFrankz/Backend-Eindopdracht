@@ -18,6 +18,7 @@ public class AudioInfo {
     private Long id;
     String genre;
     int bpm;
+    String artist;
 
     @OneToOne(mappedBy = "audioInfo")
     @JsonIgnore
@@ -25,13 +26,15 @@ public class AudioInfo {
 
 
 
+
     public void setFileDB(FileDB fileDB) {
         this.fileDB = fileDB;
     }
 
-    public AudioInfo(String genre, int bpm, FileDB fileDB) {
+    public AudioInfo(String genre, int bpm,String artist, FileDB fileDB) {
         this.genre = genre;
         this.bpm = bpm;
+        this.artist = artist;
         this.fileDB = fileDB;
     }
 }

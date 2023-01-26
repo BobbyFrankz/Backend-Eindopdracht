@@ -1,12 +1,16 @@
 package com.example.backendeindopdracht.Controllers;
 
+import com.example.backendeindopdracht.Models.Image;
 import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.exceptions.BadRequestException;
+import com.example.backendeindopdracht.service.ImageStorageService;
 import com.example.backendeindopdracht.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +21,13 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final ImageStorageService imageStorageService;
 
-    public UserController(UserService userService) {
+
+    public UserController(UserService userService, ImageStorageService imageStorageService) {
         this.userService = userService;
+
+        this.imageStorageService = imageStorageService;
     }
 
     @GetMapping(value = "")
@@ -88,5 +96,9 @@ public class UserController {
         userService.removeAuthority(username, authority);
         return ResponseEntity.noContent().build();
     }
+    @PostMapping("/{id}/upload")
+    public void assignPhotoToClient(@PathVariable String id, @RequestBody MultipartFile file) throws IOException {
+        Image image = imageStorageService.store(file);
+            UserService.assignImageToUser(image.getId(), id);}
 
 }
