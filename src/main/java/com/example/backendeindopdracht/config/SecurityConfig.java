@@ -33,7 +33,7 @@ public class SecurityConfig {
 
     // PasswordEncoderBean. Deze kun je overal in je applicatie injecteren waar nodig.
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public static PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 

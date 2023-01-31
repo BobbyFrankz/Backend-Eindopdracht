@@ -27,6 +27,9 @@ public class FileDB {
     @OneToOne
     private AudioInfo audioInfo;
 
+    @OneToMany
+    private Rating rating;
+
     public FileDB() {
     }
 

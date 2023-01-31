@@ -26,7 +26,7 @@ public class UserService {
 
     @Autowired
     @Lazy
-    private PasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository, ImageRepository imageRepository) {
         this.userRepository = userRepository;
@@ -131,7 +131,7 @@ public class UserService {
         return dto;
     }
 
-    public User toUser(UserDto userDto) {
+    public static User toUser(UserDto userDto) {
 
         var user = new User();
 

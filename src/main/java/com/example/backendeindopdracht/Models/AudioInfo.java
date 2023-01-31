@@ -16,6 +16,7 @@ public class AudioInfo {
     @Id
     @GeneratedValue
     private Long id;
+
     String genre;
     int bpm;
     String artist;

@@ -1,21 +1,30 @@
 package com.example.backendeindopdracht.Controllers;
 
-
 import com.example.backendeindopdracht.Message.ResponseMessage;
 import com.example.backendeindopdracht.Models.FileDB;
 import com.example.backendeindopdracht.Repositories.FileDBRepository;
+
 import com.example.backendeindopdracht.service.FileStorageService;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.mock.web.MockMultipartFile;
-import java.io.IOException;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.io.IOException;
+
+
 
 @ExtendWith(MockitoExtension.class)
 public class FileControllerTest {
@@ -28,6 +37,14 @@ public class FileControllerTest {
 
     @InjectMocks
     private FileController fileController;
+
+
+
+    private ObjectMapper objectMapper = new ObjectMapper();
+
+
+
+
 
     @Test
     public void testUploadFileSuccess() throws IOException {
@@ -56,5 +73,7 @@ public class FileControllerTest {
         assertEquals(HttpStatus.EXPECTATION_FAILED, response.getStatusCode());
         assertEquals("Could not upload the file: test.txt!null", response.getBody().getMessage());
     }
+
+
 
 }

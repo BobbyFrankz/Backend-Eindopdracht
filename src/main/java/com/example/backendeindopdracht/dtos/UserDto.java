@@ -3,9 +3,14 @@ package com.example.backendeindopdracht.dtos;
 
 import com.example.backendeindopdracht.Models.Authority;
 import com.example.backendeindopdracht.Models.Image;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.Objects;
 import java.util.Set;
+
+
+
 
 public class UserDto {
 

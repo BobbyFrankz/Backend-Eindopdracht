@@ -1,12 +1,17 @@
 package com.example.backendeindopdracht.Models;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@AllArgsConstructor
 @Entity
 @Table(name = "users")
+@NoArgsConstructor
 public class User {
 
     @Id
