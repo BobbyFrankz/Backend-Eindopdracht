@@ -79,9 +79,9 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
                 .body(fileDB.getData());
     }
-    @PutMapping("/{fileId}/ratings/{ratingId}")
-    public ResponseEntity<Void> assignRatingToFile(@PathVariable String fileId, @PathVariable String ratingId) {
-        storageService.assignRatingToFile(fileId, ratingId);
-        return ResponseEntity.noContent().build();
-    }
+//    @PutMapping("/{fileId}/ratings/{ratingId}")
+//    public ResponseEntity<Void> assignRatingToFile(@PathVariable String fileId, @PathVariable String ratingId) {
+//        storageService.assignRatingToFile(fileId, ratingId);
+//        return ResponseEntity.noContent().build();
+//    }
 }

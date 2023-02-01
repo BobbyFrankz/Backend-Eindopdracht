@@ -128,7 +128,7 @@ public class UserService {
         dto.artistOrProducer = user.isArtistOrProducer();
         dto.authorities = user.getAuthorities();
         dto.image = user.getImage();
-        dto.addRating((Rating) user.getRating());
+        dto.setRatings(user.getRating());
 
 
         return dto;

@@ -38,7 +38,7 @@ public class RatingService {
        Rating savedRating =  ratingRepository.save(newRating);
        assignRatingToUser(ratingDto.getUserName(), ratingDto.getUserName());
 
-        return savedRating.getUserName() ;
+        return savedRating.getUserName();
     }
 
     public void assignRatingToUser(String ratingId, String userID) {

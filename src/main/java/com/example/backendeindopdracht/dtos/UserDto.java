@@ -4,8 +4,6 @@ package com.example.backendeindopdracht.dtos;
 import com.example.backendeindopdracht.Models.Authority;
 import com.example.backendeindopdracht.Models.Image;
 import com.example.backendeindopdracht.Models.Rating;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Objects;
@@ -93,8 +91,8 @@ public class UserDto {
         return ratings;
     }
 
-    public void addRating(Rating rating) {
-        this.ratings.add(rating);
+    public void setRatings(List<Rating> ratings) {
+        this.ratings = ratings;
     }
 
     @Override
