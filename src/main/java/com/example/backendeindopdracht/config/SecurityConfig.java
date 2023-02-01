@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,7 +19,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
     In de andere branch van deze github repo staat een ander voorbeeld
  */
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfig {
 
     public final CustomUserDetailsService customUserDetailsService;
@@ -56,7 +57,7 @@ public class SecurityConfig {
 
         http
                 .csrf().disable()
-                .httpBasic().disable()
+                .httpBasic().disable().cors().and()
                 .authorizeRequests()
                 // Wanneer je deze uncomments, staat je hele security open. Je hebt dan alleen nog een jwt nodig.
 //                .antMatchers("/**").permitAll()
@@ -64,12 +65,19 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.GET,"/users").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.POST,"/users/**").permitAll()
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
-//
-//
-//                .antMatchers(HttpMethod.POST, "/upload").hasAnyRole("USER","ADMIN")
-//                .antMatchers(HttpMethod.GET,"/files").hasAnyRole("USER","ADMIN")
-//                .antMatchers(HttpMethod.POST,"/files/**").hasAnyRole("USER","ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/audiofiles/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/users").hasAnyRole("USER","ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/ratings").permitAll()
+                .antMatchers(HttpMethod.GET,"/ratings").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.POST,"/ratings/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/ratings/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/ratings").hasAnyRole("USER","ADMIN")
+
+
+                .antMatchers(HttpMethod.POST, "/upload").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.GET,"/files").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.POST,"/files/**").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/audiofiles/**").hasRole("ADMIN")
 
 
 
@@ -78,6 +86,7 @@ public class SecurityConfig {
                 // Je mag meerdere paths tegelijk definieren
                 .antMatchers("/authenticated").authenticated()
                 .antMatchers("/authenticate").permitAll()
+//                .anyRequest().permitAll()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

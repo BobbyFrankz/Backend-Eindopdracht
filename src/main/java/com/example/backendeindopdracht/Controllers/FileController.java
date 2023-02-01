@@ -27,6 +27,7 @@ public class FileController {
     private final FileStorageService storageService;
     private final FileDBRepository fileDBRepository;
 
+
     public FileController(FileStorageService storageService, FileDBRepository fileDBRepository) {
         this.storageService = storageService;
         this.fileDBRepository = fileDBRepository;
@@ -77,5 +78,10 @@ public class FileController {
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
                 .body(fileDB.getData());
+    }
+    @PutMapping("/{fileId}/ratings/{ratingId}")
+    public ResponseEntity<Void> assignRatingToFile(@PathVariable String fileId, @PathVariable String ratingId) {
+        storageService.assignRatingToFile(fileId, ratingId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.backendeindopdracht.dtos;
 
+import com.example.backendeindopdracht.Models.FileDB;
+import com.example.backendeindopdracht.Models.User;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,12 +10,17 @@ import lombok.Setter;
 
 public class RatingDto {
 
-    private Long fileDB;
+    private String userName;
     private int score;
     private String comment;
+    private User user;
+    private FileDB fileDB;
 
-    public RatingDto(Long fileDB, int score, String comment) {
-        this.fileDB = fileDB;
+    public RatingDto() {
+    }
+
+    public RatingDto(int score, String comment) {
+
         this.score = score;
         this.comment = comment;
     }

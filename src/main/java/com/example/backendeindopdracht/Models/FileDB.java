@@ -5,6 +5,9 @@ import javax.persistence.*;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Entity
 @Table(name = "files")
@@ -27,8 +30,12 @@ public class FileDB {
     @OneToOne
     private AudioInfo audioInfo;
 
-    @OneToMany
-    private Rating rating;
+    @OneToMany(
+            mappedBy = "fileDB",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<Rating> ratings = new ArrayList<>();
 
     public FileDB() {
     }
@@ -77,4 +84,9 @@ public class FileDB {
     public AudioInfo getAudioInfo() {
         return audioInfo;
     }
+
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
 }

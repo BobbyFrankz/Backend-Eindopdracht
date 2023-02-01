@@ -1,44 +1,43 @@
 package com.example.backendeindopdracht.Models;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+@NoArgsConstructor
 
 @Entity
 @Table(name = "rating")
 public class Rating {
+
     @Id
-    @GeneratedValue
-    private Long id;
+    private String userName;
 
     private int score;
     private String comment;
-    private LocalDateTime createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "rating")
-    @JsonIgnore
+
+    @ManyToOne(fetch = FetchType.LAZY)
     private FileDB fileDB;
 
-    public Rating(Long id, FileDB fileDB, int score, String comment, LocalDateTime createdAt) {
-        this.id = id;
+    @ManyToOne
+    @JsonIncludeProperties("username")
+    private User user;
+
+
+    public Rating(String userName, FileDB fileDB, int score, String comment, LocalDateTime createdAt) {
+        this.userName = userName;
         this.fileDB = fileDB;
         this.score = score;
         this.comment = comment;
-        this.createdAt = createdAt;
     }
 
-    public Rating() {
-
+    public String getUserName() {
+        return userName;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public FileDB getFileDB() {
@@ -65,11 +64,11 @@ public class Rating {
         this.comment = comment;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public User getUser() {
+        return user;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setUser(User user) {
+        this.user = user;
     }
 }

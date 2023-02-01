@@ -3,9 +3,11 @@ package com.example.backendeindopdracht.dtos;
 
 import com.example.backendeindopdracht.Models.Authority;
 import com.example.backendeindopdracht.Models.Image;
+import com.example.backendeindopdracht.Models.Rating;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -22,6 +24,7 @@ public class UserDto {
     public boolean artistOrProducer;
     public Set<Authority> authorities;
     public Image image;
+    public List<Rating> ratings;
 
 
     public String getUsername() {
@@ -86,6 +89,13 @@ public class UserDto {
         this.image = image;
     }
 
+    public List<Rating> getRatings() {
+        return ratings;
+    }
+
+    public void addRating(Rating rating) {
+        this.ratings.add(rating);
+    }
 
     @Override
     public boolean equals(Object obj) {

@@ -7,5 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface FileDBRepository extends JpaRepository<FileDB, String> {
+    FileDB findByName(String name);
 
 }

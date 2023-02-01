@@ -1,6 +1,7 @@
 package com.example.backendeindopdracht.service;
 
 import com.example.backendeindopdracht.Models.Image;
+import com.example.backendeindopdracht.Models.Rating;
 import com.example.backendeindopdracht.Repositories.ImageRepository;
 import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.exceptions.RecordNotFoundException;
@@ -127,6 +128,8 @@ public class UserService {
         dto.artistOrProducer = user.isArtistOrProducer();
         dto.authorities = user.getAuthorities();
         dto.image = user.getImage();
+        dto.addRating((Rating) user.getRating());
+
 
         return dto;
     }
@@ -142,6 +145,7 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setArtistOrProducer(userDto.getArtistOrProducer());
         user.setImage(userDto.getImage());
+        user.setRating(userDto.getRatings());
 
 
         return user;

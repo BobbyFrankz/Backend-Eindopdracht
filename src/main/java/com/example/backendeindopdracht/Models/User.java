@@ -1,5 +1,8 @@
 package com.example.backendeindopdracht.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -41,6 +44,14 @@ public class User {
             fetch = FetchType.EAGER)
     private Set<Authority> authorities = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties("ratings")
+    private List<Rating> ratings;
+
+    public void addRating(Rating rating) {
+        this.ratings.add(rating);
+    }
+
     @OneToOne
     private Image image;
 
@@ -76,5 +87,13 @@ public class User {
     public Image getImage() { return image; }
 
     public void setAuthorities(List<String> asList) {
+    }
+
+    public List<Rating> getRating() {
+        return ratings;
+    }
+
+    public void setRating(List<Rating> rating) {
+        this.ratings = rating;
     }
 }

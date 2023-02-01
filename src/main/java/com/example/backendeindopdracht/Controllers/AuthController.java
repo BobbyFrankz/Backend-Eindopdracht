@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
-@CrossOrigin
+@CrossOrigin(origins = "*")
 @RestController
 public class AuthController {
 
