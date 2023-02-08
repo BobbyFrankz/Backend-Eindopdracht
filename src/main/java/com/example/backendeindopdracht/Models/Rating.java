@@ -1,4 +1,5 @@
 package com.example.backendeindopdracht.Models;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.NoArgsConstructor;
 
@@ -11,12 +12,16 @@ import java.time.LocalDateTime;
 public class Rating {
 
     @Id
+    @GeneratedValue
+    private int id;
+
     private String userName;
 
     private int score;
     private String comment;
 
 
+    @JsonIncludeProperties("name")
     @ManyToOne(fetch = FetchType.LAZY)
     private FileDB fileDB;
 
@@ -30,6 +35,14 @@ public class Rating {
         this.fileDB = fileDB;
         this.score = score;
         this.comment = comment;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getUserName() {

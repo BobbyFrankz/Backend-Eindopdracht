@@ -22,7 +22,7 @@ public class UserDto {
     public boolean artistOrProducer;
     public Set<Authority> authorities;
     public Image image;
-    public List<Rating> ratings;
+    public List<Integer> ratingIds;
 
 
     public String getUsername() {
@@ -87,12 +87,12 @@ public class UserDto {
         this.image = image;
     }
 
-    public List<Rating> getRatings() {
-        return ratings;
+    public List<Integer> getRatingIds() {
+        return ratingIds;
     }
 
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
+    public void setRatingIds(List<Integer> ratingIds) {
+        this.ratingIds = ratingIds;
     }
 
     @Override

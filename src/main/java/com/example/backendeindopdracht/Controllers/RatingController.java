@@ -11,32 +11,44 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
+
 @RestController
 @RequestMapping("/rating")
 public class RatingController {
     @Autowired
     private RatingService ratingService;
 
-    @PostMapping("")
-    public ResponseEntity<Rating> createRating(@RequestBody RatingDto ratingDto) {
-        ratingService.createRating(ratingDto);
+    @PostMapping("/{fileId}/{username}")
+    public ResponseEntity<Rating> createRating(@RequestBody RatingDto ratingDto, @PathVariable String fileId, @PathVariable String username) {
+        ratingService.createRating(ratingDto, fileId, username);
         return ResponseEntity.ok().build();
     }
+
+    @PutMapping("/{ratingId}/file/{fileNameId}")
+    public void assignRatingToFileDB(@PathVariable Integer ratingId, @PathVariable String fileNameId) {
+        ratingService.assignRatingToFileDB(ratingId, fileNameId);
+    }
+
+    @PutMapping("/{ratingId}/user/{username}")
+    public void assignRatingToUser(@PathVariable Integer ratingId, @PathVariable String username) {
+        ratingService.assignRatingToUser(ratingId, username);
+    }
+
     @DeleteMapping("/{rating_id}")
-    public ResponseEntity<Void> deleteRating(@PathVariable String rating_id) {
+    public ResponseEntity<Void> deleteRating(@PathVariable Integer rating_id) {
         ratingService.deleteRating(rating_id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{rating_id}")
-    public ResponseEntity<Rating> fetchRating(@PathVariable String rating_id) {
-        Rating rating = ratingService.fetchRating(rating_id);
-        return ResponseEntity.ok(rating);
+    public ResponseEntity<RatingDto> fetchRating(@PathVariable Integer rating_id) {
+        RatingDto ratingDto = ratingService.fetchRating(rating_id);
+        return ResponseEntity.ok(ratingDto);
     }
 
-    @GetMapping
-    public ResponseEntity<List<Rating>> fetchAllRatings() {
-        List<Rating> ratings = ratingService.fetchAllRating();
+    @GetMapping("")
+    public ResponseEntity<List<RatingDto>> fetchAllRatings() {
+        List<RatingDto> ratings = ratingService.fetchAllRating();
         return ResponseEntity.ok(ratings);
     }
 }

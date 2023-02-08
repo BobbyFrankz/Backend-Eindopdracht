@@ -1,4 +1,5 @@
 package com.example.backendeindopdracht.service;
+import com.example.backendeindopdracht.Models.FileDB;
 import com.example.backendeindopdracht.Models.Rating;
 import com.example.backendeindopdracht.Models.User;
 import com.example.backendeindopdracht.Repositories.FileDBRepository;
@@ -11,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -25,24 +28,24 @@ public class RatingService {
     @Autowired
     private FileDBRepository fileDBRepository;
 
-    public String createRating(RatingDto ratingDto) {
+    public String createRating(RatingDto ratingDto, String nameId, String username) {
         Rating newRating = new Rating();
 
         newRating.setUserName(ratingDto.getUserName());
         newRating.setScore(ratingDto.getScore());
         newRating.setComment(ratingDto.getComment());
         newRating.setUser(ratingDto.getUser());
-        newRating.setFileDB(ratingDto.getFileDB());
 
 
        Rating savedRating =  ratingRepository.save(newRating);
-       assignRatingToUser(ratingDto.getUserName(), ratingDto.getUserName());
+       assignRatingToFileDB(newRating.getId(), nameId);
+       assignRatingToUser(newRating.getId(), username);
 
         return savedRating.getUserName();
     }
 
-    public void assignRatingToUser(String ratingId, String userID) {
-        Optional<User> optionalUser = userRepository.findById(userID);
+    public void assignRatingToUser(Integer ratingId, String userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
         Optional<Rating> optionalRating = ratingRepository.findById(ratingId);
 
         if (optionalRating.isPresent() && optionalUser.isPresent()) {
@@ -54,25 +57,47 @@ public class RatingService {
             throw new RecordNotFoundException("User or rating not found");
         }
 
-
     }
+
     @Transactional
-    public void deleteRating(String rating_id) {
+    public void assignRatingToFileDB(Integer ratingId, String fileId) {
+
+        Optional<FileDB> optionalFileDB = fileDBRepository.findById(fileId);
+        Optional<Rating> optionalRating = ratingRepository.findById(ratingId);
+
+        if (optionalRating.isPresent() && optionalFileDB.isPresent()) {
+            FileDB fileDB = optionalFileDB.get();
+            Rating rating = optionalRating.get();
+
+            rating.setFileDB(fileDB);
+            ratingRepository.save(rating);
+        } else {
+            throw new RecordNotFoundException("FileDB or rating not found");
+        }
+    }
+
+    @Transactional
+    public void deleteRating(Integer rating_id) {
 
         ratingRepository.deleteById(rating_id);
     }
 
     @Transactional
-    public Rating fetchRating(String rating_id) {
-
-        return ratingRepository.findById(rating_id)
-                .orElseThrow(RecordNotFoundException::new);
+    public RatingDto fetchRating(Integer rating_id) {
+        Rating rating = ratingRepository.findById(rating_id).orElseThrow(() -> new RecordNotFoundException());
+        return fromRating(rating);
     }
 
     @Transactional
-    public List<Rating> fetchAllRating() {
+    public List<RatingDto> fetchAllRating() {
 
-        return ratingRepository.findAll();
+        List<Rating> ratinglist = ratingRepository.findAll();
+        List<RatingDto> ratingDtoList = new ArrayList<>();
+        for(Rating rating : ratinglist){
+            RatingDto ratingDto = fromRating(rating);
+             ratingDtoList.add(ratingDto);
+        }
+        return ratingDtoList;
     }
 
     public static Rating toRating(RatingDto ratingDto) {
@@ -95,6 +120,7 @@ public class RatingService {
         ratingDto.setComment(rating.getComment());
         ratingDto.setScore(rating.getScore());
         ratingDto.setUser(rating.getUser());
+        ratingDto.setFileName(rating.getFileDB().getName());
 
 
         return ratingDto;

@@ -1,5 +1,6 @@
 package com.example.backendeindopdracht.service;
 
+import com.example.backendeindopdracht.Models.User;
 import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.Models.Authority;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,12 +26,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserDto userDto = userService.getUser(username);
+        User user = userService.getUserByUsername(username);
 
 
-        String password = userDto.getPassword();
+        String password = user.getPassword();
 
-        Set<Authority> authorities = userDto.getAuthorities();
+        Set<Authority> authorities = user.getAuthorities();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
         for (Authority authority: authorities) {
             grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));

@@ -82,7 +82,7 @@ public class UserServiceTest {
     @Test
     void fromUser() {
         //Arrange
-        User user = new User("testUsername1", "testAddress1", true, "testApiKey", "test@test.nl", true, null, null);
+        User user = new User("testUsername1", "testAddress1", true, "testApiKey", "test@test.nl", true, null, null,null);
 
         //Act
         UserDto userdto = UserService.fromUser(user);

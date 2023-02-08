@@ -67,17 +67,21 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT,"/users").hasAnyRole("USER","ADMIN")
 
-                .antMatchers(HttpMethod.POST, "/ratings").permitAll()
-                .antMatchers(HttpMethod.GET,"/ratings").hasAnyRole("USER","ADMIN")
-                .antMatchers(HttpMethod.POST,"/ratings/**").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/ratings/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT,"/ratings").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.POST, "/rating").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.GET,"/rating").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.POST,"/rating/**").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/rating/**").hasRole("ADMIN")
+                .antMatchers(HttpMethod.PUT,"/rating").hasAnyRole("USER","ADMIN")
 
 
                 .antMatchers(HttpMethod.POST, "/upload").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.GET,"/files").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.POST,"/files/**").hasAnyRole("USER","ADMIN")
                 .antMatchers(HttpMethod.DELETE, "/audiofiles/**").hasRole("ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/upload/image").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.GET,"/images").hasAnyRole("USER","ADMIN")
+                .antMatchers(HttpMethod.GET,"/images/**").hasAnyRole("USER","ADMIN")
 
 
 

@@ -3,6 +3,7 @@ package com.example.backendeindopdracht.service;
 import com.example.backendeindopdracht.Models.Image;
 import com.example.backendeindopdracht.Models.Rating;
 import com.example.backendeindopdracht.Repositories.ImageRepository;
+import com.example.backendeindopdracht.dtos.RatingDto;
 import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.exceptions.RecordNotFoundException;
 import com.example.backendeindopdracht.Models.Authority;
@@ -116,7 +117,7 @@ public class UserService {
 
     }
 
-    public static UserDto fromUser(User user){
+    public static UserDto fromUser(User user) {
 
         var dto = new UserDto();
 
@@ -128,8 +129,19 @@ public class UserService {
         dto.artistOrProducer = user.isArtistOrProducer();
         dto.authorities = user.getAuthorities();
         dto.image = user.getImage();
-        dto.setRatings(user.getRating());
-
+        List<Integer> ratingids = new ArrayList<>();
+        for(Rating rating  : user.getRating()){
+            ratingids.add(rating.getId());
+        }
+        dto.setRatingIds(ratingids);
+//        if(user.getRating()!= null) {
+//            List<RatingDto> ratingDtoList = new ArrayList<>();
+//            for (Rating rating : user.getRating()) {
+//                RatingDto ratingDto = fromRating(rating);
+//                ratingDtoList.add(ratingDto);
+//            }
+//            dto.setRatings(ratingDtoList);
+//        }
 
         return dto;
     }
@@ -145,10 +157,24 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setArtistOrProducer(userDto.getArtistOrProducer());
         user.setImage(userDto.getImage());
-        user.setRating(userDto.getRatings());
+//        List<Rating> ratingList = new ArrayList<>();
+//        for (RatingDto ratingDto : userDto.getRatings()) {
+//            Rating rating = toRating(ratingDto);
+//            ratingList.add(rating);
+//        }
+//        user.setRating(ratingList);
 
 
         return user;
     }
 
+    public User getUserByUsername(String username) {
+        Optional<User> optionalUser = userRepository.findById(username);
+        if(optionalUser.isEmpty()){
+            throw new RecordNotFoundException("not found");
+        }
+        else {
+            return optionalUser.get();
+        }
+    }
 }

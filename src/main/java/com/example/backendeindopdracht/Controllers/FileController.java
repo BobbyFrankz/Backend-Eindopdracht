@@ -6,10 +6,9 @@ import java.util.stream.Collectors;
 import com.example.backendeindopdracht.Message.ResponseFile;
 import com.example.backendeindopdracht.Message.ResponseMessage;
 import com.example.backendeindopdracht.Models.FileDB;
+import com.example.backendeindopdracht.Models.Rating;
 import com.example.backendeindopdracht.Repositories.FileDBRepository;
-import com.example.backendeindopdracht.exceptions.RecordNotFoundException;
 import com.example.backendeindopdracht.service.FileStorageService;
-
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,17 +55,19 @@ public class FileController {
                     .path(dbFile.getId())
                     .toUriString();
 
+            List<Rating> ratings = dbFile.getRatings();
+
             return new ResponseFile(
+                    dbFile.getId(),
                     dbFile.getName(),
                     fileDownloadUri,
 
                     dbFile.getType(),
                     dbFile.getData().length,
-                    FileStorageService.toDto(dbFile.getAudioInfo()))
+                    FileStorageService.toDto(dbFile.getAudioInfo()),
+                    ratings);
 
-                    ;
         }).collect(Collectors.toList());
-
         return ResponseEntity.status(HttpStatus.OK).body(files);
     }
 
@@ -77,11 +78,32 @@ public class FileController {
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileDB.getName() + "\"")
-                .body(fileDB.getData());
+                .body(fileDB.getData())
+                ;
+
+
     }
-//    @PutMapping("/{fileId}/ratings/{ratingId}")
-//    public ResponseEntity<Void> assignRatingToFile(@PathVariable String fileId, @PathVariable String ratingId) {
-//        storageService.assignRatingToFile(fileId, ratingId);
-//        return ResponseEntity.noContent().build();
-//    }
+
+    @GetMapping("/files/ratings/{id}")
+    public ResponseEntity<ResponseFile> getFileRatings(@PathVariable String id) {
+        FileDB fileDB = storageService.getFileRatings(id);
+        String fileDownloadUri = ServletUriComponentsBuilder
+                .fromCurrentContextPath()
+                .path("/files/")
+                .path(fileDB.getId())
+                .toUriString();
+        ResponseFile responseFile = new ResponseFile(
+                fileDB.getId(),
+                fileDB.getName(),
+                fileDownloadUri,
+                fileDB.getType(),
+                fileDB.getData().length,
+                FileStorageService.toDto(fileDB.getAudioInfo()),
+                fileDB.getRatings()
+        );
+        return ResponseEntity.ok(responseFile);
+    }
 }
+
+
+
