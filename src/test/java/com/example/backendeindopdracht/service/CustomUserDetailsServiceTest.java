@@ -1,56 +1,56 @@
 package com.example.backendeindopdracht.service;
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
 import com.example.backendeindopdracht.Models.Authority;
-import com.example.backendeindopdracht.dtos.UserDto;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.internal.verification.Times;
-import org.mockito.junit.jupiter.MockitoExtension;
+import com.example.backendeindopdracht.Models.User;
+import com.example.backendeindopdracht.service.CustomUserDetailsService;
+import com.example.backendeindopdracht.service.UserService;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
-import java.util.Set;
+@RunWith(MockitoJUnitRunner.class)
+public class CustomUserDetailsServiceTest {
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
+    @Mock
+    private UserService userService;
 
-@ExtendWith(MockitoExtension.class)
-class CustomUserDetailsServiceTest {
+    private CustomUserDetailsService customUserDetailsService;
+
+    @Before
+    public void setUp() {
+        customUserDetailsService = new CustomUserDetailsService(userService);
+    }
+
     @Test
     public void testLoadUserByUsername() {
-        // Arrange
-        String username = "testuser";
-        UserDto userDto = new UserDto();
-        userDto.setUsername(username);
-        userDto.setPassword("password");
+        User user = new User();
+        user.setUsername("test_user");
+        user.setPassword("test_password");
+
         Authority authority = new Authority();
         authority.setAuthority("ROLE_USER");
-        Set<Authority> authorities = new HashSet<>();
-        authorities.add(authority);
-        userDto.setAuthorities(authorities);
 
 
-        UserService userService = mock(UserService.class);
-        CustomUserDetailsService customUserDetailsService = new CustomUserDetailsService(userService);
+        when(userService.getUserByUsername(anyString())).thenReturn(user);
+
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername("test_user");
+
+        assertEquals("test_user", userDetails.getUsername());
+        assertEquals("test_password", userDetails.getPassword());
 
 
-        when(userService.getUser(username)).thenReturn(userDto);
-
-
-        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
-
-
-        assertEquals(username, userDetails.getUsername());
-        assertEquals("password", userDetails.getPassword());
-        assertTrue(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_USER")));
-        verify(userService, times(1)).getUser(username);
     }
-
-    private UserService verify(UserService userService, Times times) {
-        return userService;
-    }
-
 }

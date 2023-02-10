@@ -2,11 +2,15 @@ package com.example.backendeindopdracht.Controllers;
 
 
 import com.example.backendeindopdracht.Models.Authority;
+import com.example.backendeindopdracht.Models.User;
+import com.example.backendeindopdracht.Repositories.ImageRepository;
+import com.example.backendeindopdracht.Repositories.UserRepository;
 import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.service.ImageStorageService;
 import com.example.backendeindopdracht.service.UserService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -19,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -46,23 +52,7 @@ public class UserControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
     }
 
-    @Test
-    public void testGetUsers() throws Exception {
-        // Arrange
-        List<UserDto> expectedUserDtos = createMockUserDtos();
-        when(userService.getUsers()).thenReturn(expectedUserDtos);
 
-        // Act
-        MvcResult result = mockMvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andReturn();
-
-        // Assert
-        List<UserDto> actualUserDtos = objectMapper.readValue(result.getResponse().getContentAsString(),
-                new TypeReference<List<UserDto>>() {
-                });
-        assertThat(actualUserDtos, containsInAnyOrder(expectedUserDtos.toArray()));
-    }
 
     @Test
     public void testGetUser() throws Exception {

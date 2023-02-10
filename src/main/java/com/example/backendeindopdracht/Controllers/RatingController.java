@@ -24,15 +24,6 @@ public class RatingController {
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{ratingId}/file/{fileNameId}")
-    public void assignRatingToFileDB(@PathVariable Integer ratingId, @PathVariable String fileNameId) {
-        ratingService.assignRatingToFileDB(ratingId, fileNameId);
-    }
-
-    @PutMapping("/{ratingId}/user/{username}")
-    public void assignRatingToUser(@PathVariable Integer ratingId, @PathVariable String username) {
-        ratingService.assignRatingToUser(ratingId, username);
-    }
 
     @DeleteMapping("/{rating_id}")
     public ResponseEntity<Void> deleteRating(@PathVariable Integer rating_id) {

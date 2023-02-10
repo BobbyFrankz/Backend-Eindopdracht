@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 
 import com.example.backendeindopdracht.Message.ResponseImage;
 import com.example.backendeindopdracht.Message.ResponseMessageImage;
-import com.example.backendeindopdracht.Models.FileDB;
 import com.example.backendeindopdracht.Models.Image;
 
 

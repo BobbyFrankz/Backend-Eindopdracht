@@ -1,5 +1,4 @@
 package com.example.backendeindopdracht.Models;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIncludeProperties;
 import lombok.NoArgsConstructor;
 

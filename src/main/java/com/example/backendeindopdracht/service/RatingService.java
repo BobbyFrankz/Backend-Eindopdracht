@@ -6,7 +6,6 @@ import com.example.backendeindopdracht.Repositories.FileDBRepository;
 import com.example.backendeindopdracht.Repositories.RatingRepository;
 import com.example.backendeindopdracht.Repositories.UserRepository;
 import com.example.backendeindopdracht.dtos.RatingDto;
-import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.exceptions.RecordNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,6 @@ import javax.transaction.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -37,22 +35,23 @@ public class RatingService {
         newRating.setUser(ratingDto.getUser());
 
 
+
+       newRating = assignRatingToFileDB(newRating, nameId);
+       newRating = assignRatingToUser(newRating, username);
        Rating savedRating =  ratingRepository.save(newRating);
-       assignRatingToFileDB(newRating.getId(), nameId);
-       assignRatingToUser(newRating.getId(), username);
 
         return savedRating.getUserName();
     }
 
-    public void assignRatingToUser(Integer ratingId, String userId) {
+    public Rating assignRatingToUser(Rating rating, String userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
-        Optional<Rating> optionalRating = ratingRepository.findById(ratingId);
 
-        if (optionalRating.isPresent() && optionalUser.isPresent()) {
+
+        if (optionalUser.isPresent()) {
             User user = optionalUser.get();
-            Rating rating = optionalRating.get();
+
             rating.setUser(user);
-            ratingRepository.save(rating);
+            return rating;
         } else {
             throw new RecordNotFoundException("User or rating not found");
         }
@@ -60,17 +59,15 @@ public class RatingService {
     }
 
     @Transactional
-    public void assignRatingToFileDB(Integer ratingId, String fileId) {
+    public Rating assignRatingToFileDB(Rating rating, String fileId) {
 
         Optional<FileDB> optionalFileDB = fileDBRepository.findById(fileId);
-        Optional<Rating> optionalRating = ratingRepository.findById(ratingId);
 
-        if (optionalRating.isPresent() && optionalFileDB.isPresent()) {
+        if (optionalFileDB.isPresent()) {
             FileDB fileDB = optionalFileDB.get();
-            Rating rating = optionalRating.get();
 
             rating.setFileDB(fileDB);
-            ratingRepository.save(rating);
+            return rating;
         } else {
             throw new RecordNotFoundException("FileDB or rating not found");
         }
@@ -125,4 +122,5 @@ public class RatingService {
 
         return ratingDto;
     }
+
 }

@@ -3,7 +3,6 @@ package com.example.backendeindopdracht.service;
 import com.example.backendeindopdracht.Models.Image;
 import com.example.backendeindopdracht.Models.Rating;
 import com.example.backendeindopdracht.Repositories.ImageRepository;
-import com.example.backendeindopdracht.dtos.RatingDto;
 import com.example.backendeindopdracht.dtos.UserDto;
 import com.example.backendeindopdracht.exceptions.RecordNotFoundException;
 import com.example.backendeindopdracht.Models.Authority;
@@ -36,7 +35,7 @@ public class UserService {
     }
 
 
-    public List<UserDto> getUsers() {
+    public static List<UserDto> getUsers() {
         List<UserDto> collection = new ArrayList<>();
         List<User> list = userRepository.findAll();
         for (User user : list) {
@@ -134,14 +133,6 @@ public class UserService {
             ratingids.add(rating.getId());
         }
         dto.setRatingIds(ratingids);
-//        if(user.getRating()!= null) {
-//            List<RatingDto> ratingDtoList = new ArrayList<>();
-//            for (Rating rating : user.getRating()) {
-//                RatingDto ratingDto = fromRating(rating);
-//                ratingDtoList.add(ratingDto);
-//            }
-//            dto.setRatings(ratingDtoList);
-//        }
 
         return dto;
     }
