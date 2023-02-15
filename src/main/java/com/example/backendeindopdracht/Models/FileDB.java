@@ -57,9 +57,6 @@ public class FileDB {
         return id;
     }
 
-//    public String setId(String id) {
-//        this.id = id;
-//    }
 
     public String getName() {
         return name;

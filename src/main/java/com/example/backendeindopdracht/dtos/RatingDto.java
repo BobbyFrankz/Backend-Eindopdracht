@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 
+
 public class RatingDto {
 
     private String userName;
@@ -23,4 +24,6 @@ public class RatingDto {
         this.score = score;
         this.comment = comment;
     }
+
+
 }

@@ -97,7 +97,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
     @PostMapping("/{id}/upload")
-    public void assignPhotoToClient(@PathVariable String id, @RequestBody MultipartFile file) throws IOException {
+    public void assignPhotoToUser(@PathVariable String id, @RequestBody MultipartFile file) throws IOException {
         Image image = imageStorageService.store(file);
             UserService.assignImageToUser(image.getId(), id);}
 
