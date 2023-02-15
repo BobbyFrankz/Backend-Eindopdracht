@@ -148,12 +148,6 @@ public class UserService {
         user.setEmail(userDto.getEmail());
         user.setArtistOrProducer(userDto.getArtistOrProducer());
         user.setImage(userDto.getImage());
-//        List<Rating> ratingList = new ArrayList<>();
-//        for (RatingDto ratingDto : userDto.getRatings()) {
-//            Rating rating = toRating(ratingDto);
-//            ratingList.add(rating);
-//        }
-//        user.setRating(ratingList);
 
 
         return user;
