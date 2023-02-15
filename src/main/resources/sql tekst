@@ -1,0 +1,1 @@
+INSERT INTO AudioFiles (id, title, artist, typeOfFile, duration, filePath) VALUES (1005, '25X32', 'Bobby Frank', 'wav', 3.23 , 'Verdwaald');
