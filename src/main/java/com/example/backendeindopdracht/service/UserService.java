@@ -73,9 +73,14 @@ public class UserService {
     }
 
     public void updateUser(String username, UserDto newUser) {
-        if (!userRepository.existsById(username)) throw new RecordNotFoundException();
+        if (!userRepository.existsById(username)) {
+            throw new RecordNotFoundException();
+        }
         User user = userRepository.findById(username).get();
+        user.setUsername(newUser.getUsername());
         user.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        user.setEmail(newUser.getEmail());
+        user.setArtistOrProducer(newUser.getArtistOrProducer());
         userRepository.save(user);
     }
 
